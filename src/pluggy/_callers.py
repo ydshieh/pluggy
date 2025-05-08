@@ -2,9 +2,9 @@
 Call loop machinery
 """
 
-import sys
-
 from __future__ import annotations
+
+import sys
 
 from typing import cast
 from typing import Generator
