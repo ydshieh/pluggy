@@ -2,6 +2,8 @@
 Call loop machinery
 """
 
+import sys
+
 from __future__ import annotations
 
 from typing import cast
@@ -50,6 +52,9 @@ def _warn_teardown_exception(
     warnings.warn(PluggyTeardownRaisedWarning(msg), stacklevel=5)
 
 
+target_hook_names = ["pytest_runtest_makereport", "pytest_runtest_logreport", "pytest_report_teststatus", "pytest_runtest_logfinish", "pytest_sessionfinish", "pytest_terminal_summary", "pytest_unconfigure"]
+
+
 def _multicall(
     hook_name: str,
     hook_impls: Sequence[HookImpl],
@@ -69,6 +74,11 @@ def _multicall(
         teardowns: list[Teardown] = []
         try:
             for hook_impl in reversed(hook_impls):
+
+                if hook_name in target_hook_names:
+                    print(f"pluggy/_callers.py', lineno=79::__call__ | start running: {hook_name}: {hook_impl}")
+                    sys.stdout.flush()
+
                 try:
                     args = [caller_kwargs[argname] for argname in hook_impl.argnames]
                 except KeyError:
@@ -105,6 +115,11 @@ def _multicall(
                         results.append(res)
                         if firstresult:  # halt further impl calls
                             break
+
+                if hook_name in target_hook_names:
+                    print(f"pluggy/_callers.py', lineno=120::__call__ | finish running: {hook_name}: {hook_impl}")
+                    sys.stdout.flush()
+
         except BaseException as exc:
             exception = exc
     finally:

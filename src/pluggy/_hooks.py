@@ -510,7 +510,13 @@ class HookCaller:
         self._verify_all_args_are_provided(kwargs)
         firstresult = self.spec.opts.get("firstresult", False) if self.spec else False
         # Copy because plugins may register other plugins during iteration (#438).
-        return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+
+        output = self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+        if self.name in ["pytest_runtest_makereport", "pytest_runtest_logreport", "pytest_report_teststatus", "pytest_runtest_logfinish", "pytest_sessionfinish", "pytest_terminal_summary", "pytest_unconfigure"]:
+            print(f"pluggy/_hooks.py', lineno=514::__call__ | `self._hookexec` finished: {self.name}")
+            sys.stdout.flush()
+
+        return output
 
     def call_historic(
         self,
