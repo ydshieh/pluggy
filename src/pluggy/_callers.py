@@ -52,7 +52,7 @@ def _warn_teardown_exception(
     warnings.warn(PluggyTeardownRaisedWarning(msg), stacklevel=5)
 
 
-target_hook_names = ["pytest_report_teststatus", "pytest_sessionfinish", "pytest_terminal_summary", "pytest_unconfigure"]
+target_hook_names = ["pytest_sessionfinish", "pytest_terminal_summary", "pytest_unconfigure"]
 
 def _multicall(
     hook_name: str,
