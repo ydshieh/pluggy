@@ -512,7 +512,7 @@ class HookCaller:
         # Copy because plugins may register other plugins during iteration (#438).
 
         output = self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
-        target_hook_names = ["pytest_report_teststatus", "pytest_sessionfinish", "pytest_terminal_summary", "pytest_unconfigure"]
+        target_hook_names = ["pytest_sessionfinish", "pytest_terminal_summary", "pytest_unconfigure"]
         if self.name in target_hook_names:
             print(f"pluggy/_hooks.py', lineno=514::__call__ | `self._hookexec` finished: {self.name}")
             sys.stdout.flush()
